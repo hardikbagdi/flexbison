@@ -1,9 +1,9 @@
 %{
 #include <stdio.h>
-	extern int yylineno; 
+extern int yylineno; 
 %}
 
-%token TOK_SEMICOLON TOK_ADD TOK_SUB TOK_MUL TOK_DIV TOK_NUM TOK_PRINTLN
+%token TOK_SEMICOLON TOK_ADD TOK_SUB TOK_MUL TOK_DIV TOK_NUM TOK_PRINTLN TOK_OPENCURL TOK_CLOSECURL TOK_MAIN
 
 %union{
         int int_val;
@@ -17,15 +17,16 @@
 
 %%
 
-stmt: 
-	| stmt expr_stmt
+prog: TOK_MAIN TOK_OPENCURL stmts TOK_CLOSECURL
 ;
-
-expr_stmt:
-	   expr TOK_SEMICOLON
+stmts: 
+	| stmt  stmts
+;
+stmt:
+	| expr TOK_SEMICOLON stmt
 	   | TOK_PRINTLN expr TOK_SEMICOLON 
 		{
-			printf("%d\n",yylineno );
+			//printf("%d\n",yylineno );
 			fprintf(stdout, "the value is %d\n", $2);
 		} 
 ;
@@ -58,7 +59,7 @@ expr:
 
 int yyerror(char *s)
 {
-	printf("syntax error\n");
+	printf("\nsyntax error on line no %d\n",yylineno);
 	return 0;
 }
 

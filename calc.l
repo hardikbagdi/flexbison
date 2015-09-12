@@ -16,6 +16,9 @@ digit	([0-9])
 		}
 
 ";"	{	return(TOK_SEMICOLON);	}
+"{" {return(TOK_OPENCURL);}
+"}" {return(TOK_CLOSECURL);}
+"main()" {return(TOK_MAIN);}
 
 "+"	{	return(TOK_ADD);	}
 "-"	{	return(TOK_SUB);	}
@@ -29,4 +32,7 @@ digit	([0-9])
 	}
 
 %%
+
+//int main(){ yylex();
+// printf(" lexical Analysisfinished ");return 0;}
 
