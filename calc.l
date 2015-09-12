@@ -5,6 +5,7 @@
 %}
 digit	([0-9])
 smallcase ([a-z])
+smallcasedigit ([a-z0-9])
 %option yylineno
 %%
 
@@ -24,7 +25,7 @@ smallcase ([a-z])
 				}
 
 "int"	 {return(TOK_INT);}
-{smallcase}+ { 		yylval.string=strdup(yytext);
+{smallcase}+{smallcasedigit}* { 		yylval.string=strdup(yytext);
 
 					//sscanf(yytext, "%s", &yylval);
 					printf(" accepted variable(debugging) %s",yytext);

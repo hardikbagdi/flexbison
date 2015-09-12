@@ -1,5 +1,6 @@
 main()
 {
-int x;
+int x11;
+int aegwg;
 printvar 3+4;
 }
