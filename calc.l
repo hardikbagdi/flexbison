@@ -12,14 +12,20 @@ digit	([0-9])
 
 {digit}+	{
 		sscanf(yytext, "%d", &yylval);
-		return TOK_NUM;
+		return TOK_NUMINT;
 		}
+{digit}+.{digit}+ {
+		sscanf(yytext, "%f", &yylval);
+		return TOK_NUMFLOAT;
+
+				}
 
 ";"	{	return(TOK_SEMICOLON);	}
 "{" {return(TOK_OPENCURL);}
 "}" {return(TOK_CLOSECURL);}
 "main()" {return(TOK_MAIN);}
-
+"int" {return(TOK_INT);}
+"float" {return(TOK_FLOAT);}
 "+"	{	return(TOK_ADD);	}
 "-"	{	return(TOK_SUB);	}
 "*"	{	return(TOK_MUL);	}

@@ -3,17 +3,21 @@
 extern int yylineno; 
 %}
 
-%token TOK_SEMICOLON TOK_ADD TOK_SUB TOK_MUL TOK_DIV TOK_NUM TOK_PRINTLN TOK_OPENCURL TOK_CLOSECURL TOK_MAIN
+%token TOK_SEMICOLON TOK_ADD TOK_SUB TOK_MUL TOK_DIV TOK_NUMINT TOK_NUMFLOAT TOK_PRINTLN TOK_OPENCURL TOK_CLOSECURL TOK_MAIN TOK_INT TOK_FLOAT
 
 %union{
         int int_val;
+        float float_val;
 }
 
 /*%type <int_val> expr TOK_NUM*/
-%type <int_val> expr TOK_NUM
+%type <int_val> expr TOK_NUM TOK_INT
+/* expr can be a float as well as an int. so it should be in both the rule? same hold for TOK_NUM*/
+/*may be we need to define two seperate tokens for integer val and float val, */
+%type <float_val> TOK_FLOAT
 
-%left TOK_ADD TOK_SUB
-%left TOK_MUL TOK_DIV
+%left TOK_ADD 
+%left TOK_MUL 
 
 %%
 
@@ -48,7 +52,7 @@ expr:
 	  {
 		$$ = $1 / $3; 
 	  }
-	| TOK_NUM
+	| TOK_NUMINT
 	  { 	
 		$$ = $1;
 	  }
