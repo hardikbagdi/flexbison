@@ -3,11 +3,12 @@
 extern int yylineno; 
 %}
 
-%token TOK_SEMICOLON TOK_ADD TOK_SUB TOK_MUL TOK_DIV TOK_NUMINT TOK_NUMFLOAT TOK_PRINTVAR TOK_OPENCURL TOK_CLOSECURL TOK_MAIN TOK_INT TOK_FLOAT
+%token TOK_ID TOK_SEMICOLON TOK_ADD TOK_SUB TOK_MUL TOK_DIV TOK_NUMINT TOK_NUMFLOAT TOK_PRINTVAR TOK_OPENCURL TOK_CLOSECURL TOK_MAIN TOK_INT TOK_FLOAT
 
 %union{
         int int_val;
         float float_val;
+        char  *string;
 }
 
 /*%type <int_val> expr TOK_NUM*/
@@ -15,6 +16,7 @@ extern int yylineno;
 /* expr can be a float as well as an int. so it should be in both the rule? same hold for TOK_NUM*/
 /*may be we need to define two seperate tokens for integer val and float val, */
 %type <float_val> TOK_NUMFLOAT
+%type <string> TOK_ID
 
 %left TOK_ADD 
 %left TOK_MUL 
@@ -28,11 +30,16 @@ stmts:
 ;
 stmt:
 	| expr  
-	   | TOK_PRINTVAR expr  
+	| TOK_PRINTVAR expr  
 		{
 			//printf("%d\n",yylineno );
 			fprintf(stdout, "the value is %d\n", $2);
 		} 
+	| TOK_INT TOK_ID 
+		{
+			fprintf(stdout,"\n\n\n\nDebugging,Tok_id in parser%s\n", $2);
+		}
+	| TOK_FLOAT TOK_ID
 ;
 
 expr: 	 

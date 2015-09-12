@@ -1,0 +1,5 @@
+main()
+{
+printvar 3+4;
+int x;
+}
