@@ -2,19 +2,18 @@
 #include <stdio.h>
 #include "calc.tab.h"
 %}
-
 digit	([0-9])
 %option yylineno
 %%
 
-"println"       {       return(TOK_PRINTLN);}
+"printvar"       {       return(TOK_PRINTVAR);}
 
 
 {digit}+	{
 		sscanf(yytext, "%d", &yylval);
 		return TOK_NUMINT;
 		}
-{digit}+.{digit}+ {
+{digit}+[.]{digit}+ {
 		sscanf(yytext, "%f", &yylval);
 		return TOK_NUMFLOAT;
 
