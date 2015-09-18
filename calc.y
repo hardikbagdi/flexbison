@@ -1,15 +1,44 @@
 %{
 #include <stdio.h>
+#include <stdlib.h>
 extern int yylineno; 
-typedef struct sym_node * smt;
-typedef struct sym_node
+typedef struct sym_node * SMT; 
+SMT symboltablestart=NULL;
+ struct sym_node
 {
-	smt *smt;
+	SMT next;
 	int type;
 	char *id_name;
-
+int ival;
+float fval;
 	/* data */
 }sm_node;
+// symbol table as a linkedlist of sym_node
+
+// need to add methods here for inserting into the symbol table and looking up in the symbol table.
+
+
+//made a sample insert. don't know if it works
+SMT insert(SMT smt1,char* id,int typeofEXPR)
+{
+
+// need to check if already in the symbol table. that logic goes here and then only we will insert a new symbol
+
+
+
+  //sym_node s= (smt)malloc()
+SMT newnodepointer = (SMT)malloc(sizeof(sm_node));
+newnodepointer->id_name=id;
+newnodepointer->type=typeofEXPR;
+newnodepointer->next=smt1;
+smt1=newnodepointer;
+return smt1;
+}
+
+
+//function to search in a symbol table
+
+
 
 %}
 
@@ -17,13 +46,14 @@ typedef struct sym_node
 TOK_SUB TOK_MUL TOK_DIV TOK_NUM TOK_EQUAL
 
 %union{
-        int int_val; // edited in value-expr branch
+        int int_val;
         float float_val;
         char  *string;
    	struct s_expr //structure to store value and data type ( can be of type int of float)
-   	{
-   		int type;// type=0 is means int. ival will have the value. type=1 means float. fval will hold the value.s
-   		int ival;
+   	{               //supposed that event a identifier will be a expr becuase, a variable might be referenced later on via the identifier
+   		char *string; //stores name of the variable
+      int type;// type=0 is means int. ival will have the value. type=1 means float. fval will hold the value.
+   		int ival; //store values
    		float fval;
    		/* data */
    	}struct_expr; //this is instance of s_expr data-type which will be used to declare a token
@@ -36,7 +66,7 @@ TOK_SUB TOK_MUL TOK_DIV TOK_NUM TOK_EQUAL
 %type <float_val> TOK_NUM_FLOAT
 %type <string> TOK_IDENTIFIER 
 %type <struct_expr> expr //token of struct type defined in the above union
-%left TOK_ADD TOK_SUB
+%left TOK_ADD TOK_SUB//remove unncessary tokens
 %left TOK_MUL TOK_DIV
 
 %%
@@ -49,11 +79,15 @@ stmts:
 ;
 
 stmt:
-      TOK_INT_KEYWORD TOK_IDENTIFIER           { fprintf(stdout,"\n\n\n\nDebugging,Tok_id in parser%s\n", $2);             }
+      TOK_INT_KEYWORD TOK_IDENTIFIER           { fprintf(stdout,"\n\n\n\nDebugging,Tok_id in parser,\n id:\t%s\n", $2);  
+                                                //test to check symtable working
+                                                symboltablestart= insert(symboltablestart,$2,0);
+                                                fprintf(stdout, "Read from symbol table: %s\n", symboltablestart->id_name);
+                                               }
     | TOK_FLOAT_KEYWORD TOK_IDENTIFIER         { fprintf(stdout,"\n\n\n\nDebugging,Tok_id in parser%s\n", $2);             }
     | TOK_IDENTIFIER TOK_EQUAL expr            { fprintf(stdout,"\n\n\n\nDebugging,Tok_id in parser%s\n", $1);             }
-    | TOK_PRINTVAR TOK_IDENTIFIER              { /*printf("%d\n",yylineno );*/ fprintf(stdout, "the value is %d\n", $2);   }
-;
+    | TOK_PRINTVAR TOK_IDENTIFIER              { /*printf("%d\n",yylineno );*/ fprintf(stdout, "the value is %s\n", $2);   }
+; 
 
 expr: 	 
 	expr TOK_ADD expr
