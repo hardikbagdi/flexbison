@@ -29,6 +29,7 @@ SMT insert(SMT smt1,char* id,int typeofEXPR)
   //sym_node s= (smt)malloc()
 SMT newnodepointer = (SMT)malloc(sizeof(sm_node));
 newnodepointer->id_name=id;
+newnodepointer->ival=42;//justa test case
 newnodepointer->type=typeofEXPR;
 newnodepointer->next=smt1;
 smt1=newnodepointer;
@@ -83,25 +84,32 @@ stmt:
                                                 //test to check symtable working
                                                 symboltablestart= insert(symboltablestart,$2,0);
                                                 fprintf(stdout, "Read from symbol table: %s\n", symboltablestart->id_name);
+                                                fprintf(stdout, "Read from symbol table: %d\n", symboltablestart->ival);
                                                }
     | TOK_FLOAT_KEYWORD TOK_IDENTIFIER         { fprintf(stdout,"\n\n\n\nDebugging,Tok_id in parser%s\n", $2);             }
-    | TOK_IDENTIFIER TOK_EQUAL expr            { fprintf(stdout,"\n\n\n\nDebugging,Tok_id in parser%s\n", $1);             }
+    | TOK_IDENTIFIER TOK_EQUAL expr            {
+                                               fprintf(stdout,"\n\n\n\nDebugging,Tok_id in parser%s\n", $1);  
+                                               insert(symboltablestart,$1,$3.ival);
+
+
+                                               }
     | TOK_PRINTVAR TOK_IDENTIFIER              { /*printf("%d\n",yylineno );*/ fprintf(stdout, "the value is %s\n", $2);   }
 ; 
 
-expr: 	 
-	expr TOK_ADD expr
+expr:    
+  expr TOK_ADD expr
       {
-	//	$$ = $1 + $3; // have commented out all of them to supress errors. 
-	  }// we will have to work out everything again to implement symbol table and structure.
-	| expr TOK_MUL expr
-	  {
-	//	$$ = $1 * $3;
-	  }
-	| TOK_NUM_INT
-	  { 	
-	//	$$ = $1;
-	  }
+  //  $$ = $1 + $3; // have commented out all of them to supress errors. 
+    }// we will have to work out everything again to implement symbol table and structure.
+  | expr TOK_MUL expr
+    {
+  //  $$ = $1 * $3;
+    }
+  | TOK_NUM_INT
+    {   
+    //  fprintf(stdout,"\n\n\n\e rule applied: E is num_int %d\n", $1);  
+     $$.ival= $1;
+    }
         | TOK_NUM_FLOAT
           {
          //      $$ = $1;
