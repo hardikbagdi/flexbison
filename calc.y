@@ -17,7 +17,7 @@ typedef struct sym_node
 TOK_SUB TOK_MUL TOK_DIV TOK_NUM TOK_EQUAL
 
 %union{
-        int int_val;
+        int int_val; // edited in value-expr branch
         float float_val;
         char  *string;
    	struct s_expr //structure to store value and data type ( can be of type int of float)
