@@ -26,7 +26,7 @@ identifier      ([a-z])(a-z0-9])*
 {digit}+[.]{digit}+    {    yylval.float_val=atof(yytext); /* sscanf(yytext, "%f", yylval); */
                             printf(" TOK_NUM_FLOAT \n");return TOK_NUM_FLOAT;                                           }
 
-{identifier}            {   yylval.int=strdup(yytext);printf(" TOK_IDENTIFIER %s\n",yytext); return(TOK_IDENTIFIER); }
+{identifier}            {   yylval.string=strdup(yytext);printf(" TOK_IDENTIFIER %s\n",yytext); return(TOK_IDENTIFIER); }
 ";"                     {   printf(" TOK_SEMICOLON \n");return(TOK_SEMICOLON);                                          }
 "+"                     {	printf(" TOK_ADD \n");return(TOK_ADD);                                                      }
 "-"                     {	printf(" TOK_SUB \n");return(TOK_SUB);                                                      }
