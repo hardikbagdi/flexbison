@@ -28,6 +28,7 @@ identifier      ([a-z])(a-z0-9])*
 "float"                {	printf(" TOK_FLOAT_KEYWORD \n");
 							return(TOK_FLOAT_KEYWORD);                                  }
 {digit}+               {	yylval.int_val=atoi(yytext);
+							
                             /* sscanf(yytext, "%d", yylval); */ printf(" TOK_NUM_INT \n"); 
                             return TOK_NUM_INT;          }
 
