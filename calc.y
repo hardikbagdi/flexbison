@@ -17,6 +17,11 @@ float fval;
 
 // need to add methods here for inserting into the symbol table and looking up in the symbol table.
 
+/*total function needed to operate on symbol table:
+1. lookup - to search for a given ID
+2. insert - whenever int x; float x; (also calls lookup to verify if not alreadypreviously defined)
+3. update- eg- x=3;x=5; so we need to update the value of x. first search if x is defined using lookup. and then update
+*/
 
 //made a sample insert. don't know if it works
 SMT insert(SMT smt1,char* id,int typeofEXPR)
@@ -36,8 +41,6 @@ smt1=newnodepointer;
 return smt1;
 }
 
-
-//function to search in a symbol table
 
 
 
