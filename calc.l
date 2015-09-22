@@ -25,9 +25,7 @@ identifier      ([a-z])(a-z0-9])*
 {identifier}           {yylval.string=strdup(yytext);printf(" TOK_IDENTIFIER %s\n",yytext);return(TOK_IDENTIFIER);}
 ";"                    {printf(" TOK_SEMICOLON \n");return(TOK_SEMICOLON);}
 "+"                    {printf(" TOK_ADD \n");return(TOK_ADD);}
-"-"                    {printf(" TOK_SUB \n");return(TOK_SUB);}
 "*"                    {printf(" TOK_MUL \n");return(TOK_MUL);}
-"/"                    {printf(" TOK_DIV \n");return(TOK_DIV);}
 "="                    {printf(" TOK_EQUAL \n");return(TOK_EQUAL);}
 [ \n]                  {printf("\n");}
 .                      {printf("Invalid character '%c', ignored\n", yytext[0]);}

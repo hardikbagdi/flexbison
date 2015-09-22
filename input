@@ -1,5 +1,7 @@
-main()
+main() 
 {
-3+4;
-printvar 3;
+float z;
+z=45;
+int z;
+z=67;
 }
