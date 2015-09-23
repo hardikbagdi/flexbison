@@ -194,6 +194,12 @@ stmt: TOK_INT_KEYWORD TOK_IDENTIFIER    {
 
     | TOK_PRINTVAR TOK_IDENTIFIER       {
                                     //fprintf(stdout, "TOK_PRINTVAR the value is %s\n", $2);
+                                      SMT id_in_smt=  lookup(symbol_table_pointer_ref,$2);
+                                      if(id_in_smt==NULL){
+
+                                        yyerror("undefined identifier error");
+
+                                      }
                                      print(symbol_table_pointer_ref,$2);
                                     //add print support. currently prints only the head node of the SMT.
                                         }

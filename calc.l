@@ -12,7 +12,7 @@
 digit           ([0-9])
 characters      ([a-z])
 smallcasedigit 	([a-z0-9])
-identifier      ([a-z])(a-z0-9])*
+identifier      ([a-z])([a-z0-9])*
 
 %option yylineno
 
