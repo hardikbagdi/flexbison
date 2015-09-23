@@ -165,12 +165,12 @@ stmts:
 
 stmt: TOK_INT_KEYWORD TOK_IDENTIFIER    {
                                           // fprintf(stdout,"\n\nDebugging,TOK_INT_KEYWORD in parser,\n id:\t%s\n", $2);
-                                          symbol_table_pointer_ref= insert(symbol_table_pointer_ref,$2,0,9999,9999.99);
+                                          symbol_table_pointer_ref= insert(symbol_table_pointer_ref,$2,0,0,0.00);
                                           /*fprintf(stdout, "Read from symbol table: %s and value is %d", symbol_table_pointer_ref->id_name,symbol_table_pointer_ref->ival);*/
                                         }
     | TOK_FLOAT_KEYWORD TOK_IDENTIFIER  {
                                         // fprintf(stdout,"\n\n\n\nDebugging,TOK_FLOAT_KEYWORD in parser %s\n", $2);
-                                          symbol_table_pointer_ref= insert(symbol_table_pointer_ref,$2,1,9999,9999.99);
+                                          symbol_table_pointer_ref= insert(symbol_table_pointer_ref,$2,1,0,0.00);
                                          /* fprintf(stdout, "Read from symbol table: %s and value is %.2f", symbol_table_pointer_ref->id_name,symbol_table_pointer_ref->fval);*/
                                         }
     | TOK_IDENTIFIER TOK_EQUAL expr     {
