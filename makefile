@@ -7,7 +7,7 @@ compile_bison:
 	bison -dv calc.y
 
 link_flex_bison:
-	gcc -o calc calc.tab.c lex.yy.c -lfl
+	gcc -o calc calc.tab.c lex.yy.c -ll
 
 output:
 	./calc < input

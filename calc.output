@@ -1,4 +1,4 @@
-Terminals unused in grammar
+Terminals which are not used
 
    TOK_PRINTLN
 
@@ -9,7 +9,7 @@ Grammar
 
     1 prog: TOK_MAIN TOK_OPENCURL stmts TOK_CLOSECURL
 
-    2 stmts: %empty
+    2 stmts: /* empty */
     3      | stmt TOK_SEMICOLON stmts
 
     4 stmt: TOK_INT_KEYWORD TOK_IDENTIFIER
@@ -58,7 +58,7 @@ expr (21)
     on left: 8 9 10 11 12, on right: 6 8 9
 
 
-State 0
+state 0
 
     0 $accept: . prog $end
 
@@ -67,21 +67,21 @@ State 0
     prog  go to state 2
 
 
-State 1
+state 1
 
     1 prog: TOK_MAIN . TOK_OPENCURL stmts TOK_CLOSECURL
 
     TOK_OPENCURL  shift, and go to state 3
 
 
-State 2
+state 2
 
     0 $accept: prog . $end
 
     $end  shift, and go to state 4
 
 
-State 3
+state 3
 
     1 prog: TOK_MAIN TOK_OPENCURL . stmts TOK_CLOSECURL
 
@@ -96,77 +96,77 @@ State 3
     stmt   go to state 10
 
 
-State 4
+state 4
 
     0 $accept: prog $end .
 
     $default  accept
 
 
-State 5
+state 5
 
     7 stmt: TOK_PRINTVAR . TOK_IDENTIFIER
 
     TOK_IDENTIFIER  shift, and go to state 11
 
 
-State 6
+state 6
 
     4 stmt: TOK_INT_KEYWORD . TOK_IDENTIFIER
 
     TOK_IDENTIFIER  shift, and go to state 12
 
 
-State 7
+state 7
 
     5 stmt: TOK_FLOAT_KEYWORD . TOK_IDENTIFIER
 
     TOK_IDENTIFIER  shift, and go to state 13
 
 
-State 8
+state 8
 
     6 stmt: TOK_IDENTIFIER . TOK_EQUAL expr
 
     TOK_EQUAL  shift, and go to state 14
 
 
-State 9
+state 9
 
     1 prog: TOK_MAIN TOK_OPENCURL stmts . TOK_CLOSECURL
 
     TOK_CLOSECURL  shift, and go to state 15
 
 
-State 10
+state 10
 
     3 stmts: stmt . TOK_SEMICOLON stmts
 
     TOK_SEMICOLON  shift, and go to state 16
 
 
-State 11
+state 11
 
     7 stmt: TOK_PRINTVAR TOK_IDENTIFIER .
 
     $default  reduce using rule 7 (stmt)
 
 
-State 12
+state 12
 
     4 stmt: TOK_INT_KEYWORD TOK_IDENTIFIER .
 
     $default  reduce using rule 4 (stmt)
 
 
-State 13
+state 13
 
     5 stmt: TOK_FLOAT_KEYWORD TOK_IDENTIFIER .
 
     $default  reduce using rule 5 (stmt)
 
 
-State 14
+state 14
 
     6 stmt: TOK_IDENTIFIER TOK_EQUAL . expr
 
@@ -177,14 +177,14 @@ State 14
     expr  go to state 20
 
 
-State 15
+state 15
 
     1 prog: TOK_MAIN TOK_OPENCURL stmts TOK_CLOSECURL .
 
     $default  reduce using rule 1 (prog)
 
 
-State 16
+state 16
 
     3 stmts: stmt TOK_SEMICOLON . stmts
 
@@ -199,28 +199,28 @@ State 16
     stmt   go to state 10
 
 
-State 17
+state 17
 
    10 expr: TOK_NUM_INT .
 
     $default  reduce using rule 10 (expr)
 
 
-State 18
+state 18
 
    11 expr: TOK_NUM_FLOAT .
 
     $default  reduce using rule 11 (expr)
 
 
-State 19
+state 19
 
    12 expr: TOK_IDENTIFIER .
 
     $default  reduce using rule 12 (expr)
 
 
-State 20
+state 20
 
     6 stmt: TOK_IDENTIFIER TOK_EQUAL expr .
     8 expr: expr . TOK_ADD expr
@@ -232,14 +232,14 @@ State 20
     $default  reduce using rule 6 (stmt)
 
 
-State 21
+state 21
 
     3 stmts: stmt TOK_SEMICOLON stmts .
 
     $default  reduce using rule 3 (stmts)
 
 
-State 22
+state 22
 
     8 expr: expr TOK_ADD . expr
 
@@ -250,7 +250,7 @@ State 22
     expr  go to state 24
 
 
-State 23
+state 23
 
     9 expr: expr TOK_MUL . expr
 
@@ -261,7 +261,7 @@ State 23
     expr  go to state 25
 
 
-State 24
+state 24
 
     8 expr: expr . TOK_ADD expr
     8     | expr TOK_ADD expr .
@@ -272,7 +272,7 @@ State 24
     $default  reduce using rule 8 (expr)
 
 
-State 25
+state 25
 
     8 expr: expr . TOK_ADD expr
     9     | expr . TOK_MUL expr

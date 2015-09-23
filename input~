@@ -1,8 +1,0 @@
-main()
-{
-float y;
-y=6.2
-printvar y;
-y=y+8.2;
-printvar y;
-}
