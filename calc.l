@@ -1,3 +1,8 @@
+/*
+ Subject: PL (CS 571 -01 and 02)
+ Hardik Bagdi and Shashi Upadhyay
+ Assignment
+ */
 %{
 #include <stdio.h>
 #include <stdlib.h>

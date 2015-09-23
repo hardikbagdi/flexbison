@@ -532,11 +532,16 @@ static int yy_prev_more_offset = 0;
 char yytext[YYLMAX];
 char *yytext_ptr;
 #line 1 "calc.l"
-#line 2 "calc.l"
+/*
+ Subject: PL (CS 571 -01 and 02)
+ Hardik Bagdi and Shashi Upadhyay
+ Assignment
+ */
+#line 7 "calc.l"
 #include <stdio.h>
 #include <stdlib.h>
 #include "calc.tab.h"
-#line 540 "lex.yy.c"
+#line 545 "lex.yy.c"
 
 #define INITIAL 0
 
@@ -718,10 +723,10 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
     
-#line 14 "calc.l"
+#line 19 "calc.l"
 
 
-#line 725 "lex.yy.c"
+#line 730 "lex.yy.c"
 
 	if ( !(yy_init) )
 		{
@@ -826,91 +831,91 @@ do_action:	/* This label is used only to access EOF actions. */
 	{ /* beginning of action switch */
 case 1:
 YY_RULE_SETUP
-#line 16 "calc.l"
+#line 21 "calc.l"
 {/*printf(" TOK_MAIN \n"); */ return(TOK_MAIN);}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 17 "calc.l"
+#line 22 "calc.l"
 {/*printf(" TOK_OPENCURL \n");  */ return(TOK_OPENCURL);}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 18 "calc.l"
+#line 23 "calc.l"
 {/*printf(" TOK_CLOSECURL  \n"); */ return(TOK_CLOSECURL);}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 19 "calc.l"
+#line 24 "calc.l"
 {/* printf(" TOK_PRINTVAR \n"); */ return(TOK_PRINTVAR);}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 20 "calc.l"
+#line 25 "calc.l"
 {/*printf(" TOK_PRINTLN \n"); */ return(TOK_PRINTLN);}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 21 "calc.l"
+#line 26 "calc.l"
 {/* printf(" TOK_INT_KEYWORD \n"); */return(TOK_INT_KEYWORD);}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 22 "calc.l"
+#line 27 "calc.l"
 {/* printf(" TOK_FLOAT_KEYWORD \n"); */return(TOK_FLOAT_KEYWORD);}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 23 "calc.l"
+#line 28 "calc.l"
 {yylval.int_val=atoi(yytext);/* printf(" TOK_NUM_INT \n"); */return TOK_NUM_INT;}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 24 "calc.l"
+#line 29 "calc.l"
 {yylval.float_val=atof(yytext); return TOK_NUM_FLOAT;}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 25 "calc.l"
+#line 30 "calc.l"
 {yylval.string=strdup(yytext); return(TOK_IDENTIFIER);}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 26 "calc.l"
+#line 31 "calc.l"
 {/* printf(" TOK_SEMICOLON \n"); */return(TOK_SEMICOLON);}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 27 "calc.l"
+#line 32 "calc.l"
 {/* printf(" TOK_ADD \n"); */return(TOK_ADD);}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 28 "calc.l"
+#line 33 "calc.l"
 {/* printf(" TOK_MUL \n"); */return(TOK_MUL);}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 29 "calc.l"
+#line 34 "calc.l"
 {/* printf(" TOK_EQUAL \n"); */return(TOK_EQUAL);}
 	YY_BREAK
 case 15:
 /* rule 15 can match eol */
 YY_RULE_SETUP
-#line 30 "calc.l"
+#line 35 "calc.l"
 {}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 31 "calc.l"
+#line 36 "calc.l"
 {printf("Invalid character '%c', ignored\n", yytext[0]);}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 33 "calc.l"
+#line 38 "calc.l"
 ECHO;
 	YY_BREAK
-#line 914 "lex.yy.c"
+#line 919 "lex.yy.c"
 			case YY_STATE_EOF(INITIAL):
 				yyterminate();
 
@@ -1893,7 +1898,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 33 "calc.l"
+#line 38 "calc.l"
 
 
 /*

@@ -102,7 +102,7 @@
 
 
 /* Copy the first part of user declarations.  */
-#line 1 "calc.y"
+#line 7 "calc.y"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -248,7 +248,7 @@ void print(SMT smt_ref, char* id){
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 128 "calc.y"
+#line 134 "calc.y"
 {
         int int_val;
         float float_val;
@@ -565,8 +565,8 @@ static const yytype_int8 yyrhs[] =
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,   153,   153,   156,   157,   160,   165,   170,   189,   197,
-     214,   225,   229,   233
+       0,   159,   159,   162,   163,   166,   171,   176,   195,   203,
+     220,   231,   235,   239
 };
 #endif
 
@@ -1479,7 +1479,7 @@ yyreduce:
   switch (yyn)
     {
         case 5:
-#line 160 "calc.y"
+#line 166 "calc.y"
     {
                                           // fprintf(stdout,"\n\nDebugging,TOK_INT_KEYWORD in parser,\n id:\t%s\n", $2);
                                           symbol_table_pointer_ref= insert(symbol_table_pointer_ref,(yyvsp[(2) - (2)].string),0,9999,9999.99);
@@ -1488,7 +1488,7 @@ yyreduce:
     break;
 
   case 6:
-#line 165 "calc.y"
+#line 171 "calc.y"
     {
                                         // fprintf(stdout,"\n\n\n\nDebugging,TOK_FLOAT_KEYWORD in parser %s\n", $2);
                                           symbol_table_pointer_ref= insert(symbol_table_pointer_ref,(yyvsp[(2) - (2)].string),1,9999,9999.99);
@@ -1497,7 +1497,7 @@ yyreduce:
     break;
 
   case 7:
-#line 170 "calc.y"
+#line 176 "calc.y"
     {
                                           //fprintf(stdout,"\n\nDebugging,TOK_IDENTIFIER %s and value is %d \n", $1, $3.ival);
                                           SMT id_in_smt = lookup(symbol_table_pointer_ref,(yyvsp[(1) - (3)].string));
@@ -1519,7 +1519,7 @@ yyreduce:
     break;
 
   case 8:
-#line 189 "calc.y"
+#line 195 "calc.y"
     {
                                     //fprintf(stdout, "TOK_PRINTVAR the value is %s\n", $2);
                                      print(symbol_table_pointer_ref,(yyvsp[(2) - (2)].string));
@@ -1528,7 +1528,7 @@ yyreduce:
     break;
 
   case 9:
-#line 197 "calc.y"
+#line 203 "calc.y"
     {
         if((yyvsp[(1) - (3)].struct_expr).type==(yyvsp[(3) - (3)].struct_expr).type){
             (yyval.struct_expr).type=(yyvsp[(1) - (3)].struct_expr).type;
@@ -1549,7 +1549,7 @@ yyreduce:
     break;
 
   case 10:
-#line 214 "calc.y"
+#line 220 "calc.y"
     {
         if((yyvsp[(1) - (3)].struct_expr).type==(yyvsp[(3) - (3)].struct_expr).type){
             (yyval.struct_expr).type=(yyvsp[(1) - (3)].struct_expr).type;
@@ -1564,7 +1564,7 @@ yyreduce:
     break;
 
   case 11:
-#line 225 "calc.y"
+#line 231 "calc.y"
     {
                     /* fprintf(stdout,"\n\n\n\e rule applied: E is num_int %d\n", $1); */
                     (yyval.struct_expr).ival = (yyvsp[(1) - (1)].int_val);
@@ -1572,7 +1572,7 @@ yyreduce:
     break;
 
   case 12:
-#line 229 "calc.y"
+#line 235 "calc.y"
     {
                     /*fprintf(stdout,"\n\n\n\e rule applied: E is float_int %.2f\n", $1); */
                         (yyval.struct_expr).type=1; (yyval.struct_expr).fval = (yyvsp[(1) - (1)].float_val);
@@ -1580,7 +1580,7 @@ yyreduce:
     break;
 
   case 13:
-#line 234 "calc.y"
+#line 240 "calc.y"
     {
                     (yyval.struct_expr).id_name = (yyvsp[(1) - (1)].string);
                     SMT id_in_smt = lookup(symbol_table_pointer_ref,(yyvsp[(1) - (1)].string));
@@ -1821,7 +1821,7 @@ yyreturn:
 }
 
 
-#line 259 "calc.y"
+#line 265 "calc.y"
 
 
 int yyerror(char *s)
