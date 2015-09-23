@@ -1,7 +1,4 @@
 main()
 {
-int x;
 x=6;
-x=x+8;
-printvar x;
 }

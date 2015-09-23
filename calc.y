@@ -36,7 +36,7 @@ List of functions working in symbol table:
 SMT lookup(SMT smt_ref, char* id){
     printf(" Fetching values from symbol table \n");
     if(smt_ref != NULL){
-        printf("pointer value is not null \n");
+       // printf("pointer value is not null \n");
         SMT lookup_node_pointer = smt_ref;
         while(lookup_node_pointer != NULL){
             if(strcmp(lookup_node_pointer->id_name,id)==0){
@@ -55,7 +55,7 @@ SMT lookup(SMT smt_ref, char* id){
 /* 
  Function to insert values in the symbol table */
 SMT insert(SMT smt_ref,char* id,int type_of_expr,int int_val,float float_val){
-    printf(" Entered insert function \n");
+  //  printf(" Entered insert function \n");
     if(lookup(smt_ref,id) == NULL){
          printf("Going to insert values \n");
          SMT new_node_pointer = (SMT)malloc(sizeof(sm_node));
@@ -78,12 +78,12 @@ void update(SMT smt_ref, char* id,int int_val,float float_val){
             printf("Error in update \n");
             yyerror();
         }else{
-            printf("Going to update identifier value");
+        //    printf("Going to update identifier value");
             SMT update_node_pointer = smt_ref;
             while(update_node_pointer != NULL){
-            printf("point name : %s and Identifier value : %s and type value : %d and ival : %d\n",update_node_pointer->id_name,id, update_node_pointer->type, update_node_pointer->ival = int_val);
+         //   printf("point name : %s and Identifier value : %s and type value : %d and ival : %d\n",update_node_pointer->id_name,id, update_node_pointer->type, update_node_pointer->ival = int_val);
                 if(strcmp(update_node_pointer->id_name, id) == 0){
-                    printf("inside if loop of update function \n");
+                 //   printf("inside if loop of update function \n");
                     if(update_node_pointer->type == 0){
                         update_node_pointer->ival = int_val;
                         printf("value of int_val updated : %d \n", update_node_pointer->ival);
@@ -101,11 +101,11 @@ void update(SMT smt_ref, char* id,int int_val,float float_val){
 
 /* Function to print values of existing pointer */
 void print(SMT smt_ref, char* id){
-        printf(" Entered print function \n");
+      //  printf(" Entered print function \n");
         SMT print_node_pointer = smt_ref;
-        printf("going to enter execute while loop \n");
+        //printf("going to enter execute while loop \n");
         while(print_node_pointer != NULL){
-            printf("executing while loop \n");
+          //  printf("executing while loop \n");
             if(strcmp(print_node_pointer->id_name, id) == 0){
                 printf(" The Value of %s is", print_node_pointer->id_name);
                 if(print_node_pointer->type == 0){
@@ -147,7 +147,7 @@ int type_check(SMT smt_ref, char* id){
          /* Structure to store identifiers, their respective values and datatypes */
          struct s_expr
          {               /*supposed that event a identifier will be a expr becuase, a variable might be referenced later on via the identifier */
-             char *string; /* stores name of the identifiers */
+             char *id_name; /* stores name of the identifiers */
              int type; /* type=0 symbolize int and type = 1 symbolize float*/
              int ival; /* Store int values */
              float fval; /* store float values */
@@ -172,31 +172,67 @@ stmts:
 ;
 
 stmt: TOK_INT_KEYWORD TOK_IDENTIFIER    {
-                                           fprintf(stdout,"\n\n\n\nDebugging,TOK_INT_KEYWORD in parser,\n id:\t%s\n", $2);
+                                          // fprintf(stdout,"\n\nDebugging,TOK_INT_KEYWORD in parser,\n id:\t%s\n", $2);
                                           symbol_table_pointer_ref= insert(symbol_table_pointer_ref,$2,0,9999,9999.99);
-                                          fprintf(stdout, "Read from symbol table: %s\n", symbol_table_pointer_ref->id_name);
-                                          fprintf(stdout, "Read from symbol table: %d\n", symbol_table_pointer_ref->ival);
+                                          fprintf(stdout, "Read from symbol table: %s and value is %d", symbol_table_pointer_ref->id_name,symbol_table_pointer_ref->ival); 
                                         }
     | TOK_FLOAT_KEYWORD TOK_IDENTIFIER  {
-                                         fprintf(stdout,"\n\n\n\nDebugging,TOK_FLOAT_KEYWORD in parser %s\n", $2);
+                                        // fprintf(stdout,"\n\n\n\nDebugging,TOK_FLOAT_KEYWORD in parser %s\n", $2);
                                           symbol_table_pointer_ref= insert(symbol_table_pointer_ref,$2,1,9999,9999.99);
+                                          fprintf(stdout, "Read from symbol table: %s and value is %f", symbol_table_pointer_ref->id_name,symbol_table_pointer_ref->fval); 
                                         }
     | TOK_IDENTIFIER TOK_EQUAL expr     {
-                                          fprintf(stdout,"\n\n\n\nDebugging,TOK_IDENTIFIER %s and %d \n", $1, $3.ival);
+                                          //fprintf(stdout,"\n\nDebugging,TOK_IDENTIFIER %s and value is %d \n", $1, $3.ival);
+                                          SMT id_in_smt = lookup(symbol_table_pointer_ref,$1);
+                                          if(id_in_smt==NULL){yyerror("symbol not found error");}
+                                          if(id_in_smt->type!=$3.type){yyerror("Type Error when assigning expr to ID");}
+
                                           update(symbol_table_pointer_ref,$1,$3.ival,$3.fval);
-                                           fprintf(stdout, "Read after update; value of %s = %d\n", symbol_table_pointer_ref->id_name, symbol_table_pointer_ref->ival);
+                                           if(id_in_smt->type==0){
+                                           fprintf(stdout, "Read after update(int); value of %s = %d\n", id_in_smt->id_name, id_in_smt->ival);
+                                          }
+                                          else if(id_in_smt->type==1){
+
+
+                                           fprintf(stdout, "Read after update(float); value of %s = %f\n", id_in_smt->id_name, id_in_smt->fval);
+
+                                          }
                                         }
 
     | TOK_PRINTVAR TOK_IDENTIFIER       {
-                                    fprintf(stdout, "TOK_PRINTVAR the value is %s\n", $2); print(symbol_table_pointer_ref,$2);
+                                    //fprintf(stdout, "TOK_PRINTVAR the value is %s\n", $2);
+                                     print(symbol_table_pointer_ref,$2);
+                                    //add print support. currently prints only the head node of the SMT.
                                         }
 ;
 
 expr:
     expr TOK_ADD expr {
-        fprintf(stdout," expr value in TOK_ADD before addition %s and %d = %d ---\n",$1.string,$3.ival);
-        $$.ival = $1.ival + $3.ival;
-    fprintf(stdout," expr value in TOK_ADD addition %d + %d = %d ---\n",$1.ival,$3.ival, $$.ival);
+        
+        
+
+        if($1.type==$3.type){
+            $$.type=$1.type;
+            if($1.type==0){
+
+                $$.ival = $1.ival + $3.ival;
+            fprintf(stdout," Adding two values(int)  %d and  %d ---\n",$1.ival,$3.ival);
+                
+            }
+            else if($1.type==1){
+
+                $$.fval = $1.fval + $3.fval;
+            fprintf(stdout," Adding two values(float)  %f and  %f ---\n",$1.fval,$3.fval);
+
+            }
+
+
+        }
+        else{
+
+            yyerror("type error, mismatch in data type(operands)");
+        }
+    //fprintf(stdout," expr value in TOK_ADD addition %d + %d = %d ---\n",$1.ival,$3.ival, $$.ival);
     
     }
     | expr TOK_MUL expr {
@@ -206,12 +242,41 @@ expr:
                 fprintf(stdout,"\n\n\n\e rule applied: E is num_int %d\n", $1);
                 $$.ival = $1;
               }
-    | TOK_NUM_FLOAT { fprintf(stdout,"\n\n\n\e rule applied: E is float_int %f\n", $1); $$.fval = $1; }
+    | TOK_NUM_FLOAT { fprintf(stdout,"\n\n\n\e rule applied: E is float_int %f\n", $1); 
+                        $$.type=1;
+                        $$.fval = $1; 
+                    }
     | TOK_IDENTIFIER
                 {
-                    $$.string = $1;
-                    fprintf(stdout,"---TOK_IDENTIFIER----\n");
-                    fprintf(stdout,"%%%%%% %s ^^^^^^ \n",$1);
+                    $$.id_name = $1;
+                    SMT id_in_smt = lookup(symbol_table_pointer_ref,$1);
+                    if(id_in_smt==NULL){
+
+                        yyerror("Symbol not found error");
+
+                    }
+                    else{
+                            $$.type= id_in_smt->type;
+                            if((id_in_smt->type)==0)
+                                    {
+
+
+                                        $$.ival = id_in_smt->ival;
+                                       // $$.id_name=id_in_smt->id_name;
+                                        printf("copied id ival to expr\n");
+                                    }
+                            if((id_in_smt->type)==1)
+                            {
+                                        $$.fval = id_in_smt->fval;
+                                       // $$.id_name=id_in_smt->id_name;
+                                        printf("copied id fval to expr\n");
+
+
+                            }
+
+                    }
+                    //fprintf(stdout,"---TOK_IDENTIFIER----\n");
+                  //  fprintf(stdout,"%%%%%% %s ^^^^^^ \n",$1);
                     
                 }
 ;
@@ -222,6 +287,7 @@ expr:
 int yyerror(char *s)
 {
 	printf("\n %s on line no %d\n",s, yylineno);
+  exit(0);
 	return 0;
 }
 
