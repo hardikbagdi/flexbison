@@ -106,7 +106,8 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-extern int yylineno; 
+#include <string.h>
+extern int yylineno;
 
 typedef struct sym_node * SMT; 
 
@@ -224,6 +225,20 @@ void print(SMT smt_ref, char* id){
         }
 }
 
+int type_check(SMT smt_ref, char* id){
+    printf(" Type check \n");
+    printf("Input for type checking %s \n", id);
+    int type_check;
+    SMT type_check_node_pointer;
+    type_check_node_pointer = smt_ref;
+    /*if(type_check_node_pointer != NULL){*/
+       type_check_node_pointer = lookup(smt_ref, id);
+       type_check = type_check_node_pointer->type;
+   /* } */
+    printf("\nType_checking output ====  %d\n", type_check);
+    return type_check;
+}
+
 
 
 
@@ -247,12 +262,12 @@ void print(SMT smt_ref, char* id){
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 127 "calc.y"
+#line 142 "calc.y"
 {
         int int_val;
         float float_val;
         char *string;
-        
+        int data_type;
          /* Structure to store identifiers, their respective values and datatypes */
          struct s_expr
          {               /*supposed that event a identifier will be a expr becuase, a variable might be referenced later on via the identifier */
@@ -264,7 +279,7 @@ typedef union YYSTYPE
          }struct_expr; /* this is instance of s_expr data-type which will be used to declare a token */
     }
 /* Line 193 of yacc.c.  */
-#line 268 "calc.tab.c"
+#line 283 "calc.tab.c"
 	YYSTYPE;
 # define yystype YYSTYPE /* obsolescent; will be withdrawn */
 # define YYSTYPE_IS_DECLARED 1
@@ -277,7 +292,7 @@ typedef union YYSTYPE
 
 
 /* Line 216 of yacc.c.  */
-#line 281 "calc.tab.c"
+#line 296 "calc.tab.c"
 
 #ifdef short
 # undef short
@@ -492,16 +507,16 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  4
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   22
+#define YYLAST   23
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  17
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  5
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  12
+#define YYNRULES  13
 /* YYNRULES -- Number of states.  */
-#define YYNSTATES  25
+#define YYNSTATES  26
 
 /* YYTRANSLATE(YYLEX) -- Bison symbol number corresponding to YYLEX.  */
 #define YYUNDEFTOK  2
@@ -549,7 +564,7 @@ static const yytype_uint8 yytranslate[] =
 static const yytype_uint8 yyprhs[] =
 {
        0,     0,     3,     8,     9,    13,    16,    19,    23,    26,
-      30,    34,    36
+      30,    34,    36,    38
 };
 
 /* YYRHS -- A `-1'-separated list of the rules' RHS.  */
@@ -558,14 +573,14 @@ static const yytype_int8 yyrhs[] =
       18,     0,    -1,     3,     4,    19,     5,    -1,    -1,    20,
       13,    19,    -1,     8,    12,    -1,     9,    12,    -1,    12,
       16,    21,    -1,     6,    12,    -1,    21,    14,    21,    -1,
-      21,    15,    21,    -1,    10,    -1,    11,    -1
+      21,    15,    21,    -1,    10,    -1,    11,    -1,    12,    -1
 };
 
 /* YYRLINE[YYN] -- source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,   152,   152,   155,   156,   159,   163,   165,   169,   173,
-     174,   175,   176
+       0,   167,   167,   170,   171,   174,   180,   184,   190,   196,
+     202,   205,   209,   210
 };
 #endif
 
@@ -596,14 +611,14 @@ static const yytype_uint16 yytoknum[] =
 static const yytype_uint8 yyr1[] =
 {
        0,    17,    18,    19,    19,    20,    20,    20,    20,    21,
-      21,    21,    21
+      21,    21,    21,    21
 };
 
 /* YYR2[YYN] -- Number of symbols composing right hand side of rule YYN.  */
 static const yytype_uint8 yyr2[] =
 {
        0,     2,     4,     0,     3,     2,     2,     3,     2,     3,
-       3,     1,     1
+       3,     1,     1,     1
 };
 
 /* YYDEFACT[STATE-NAME] -- Default rule to reduce with in state
@@ -612,14 +627,14 @@ static const yytype_uint8 yyr2[] =
 static const yytype_uint8 yydefact[] =
 {
        0,     0,     0,     3,     1,     0,     0,     0,     0,     0,
-       0,     8,     5,     6,     0,     2,     3,    11,    12,     7,
-       4,     0,     0,     9,    10
+       0,     8,     5,     6,     0,     2,     3,    11,    12,    13,
+       7,     4,     0,     0,     9,    10
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-      -1,     2,     9,    10,    19
+      -1,     2,     9,    10,    20
 };
 
 /* YYPACT[STATE-NUM] -- Index in YYTABLE of the portion describing
@@ -627,15 +642,15 @@ static const yytype_int8 yydefgoto[] =
 #define YYPACT_NINF -13
 static const yytype_int8 yypact[] =
 {
-      -2,     7,    12,    -6,   -13,     1,     2,     3,     0,    13,
-       4,   -13,   -13,   -13,    -3,   -13,    -6,   -13,   -13,   -10,
-     -13,    -3,    -3,     5,   -13
+      -2,     8,    13,    -6,   -13,     2,     3,     4,     1,    14,
+       5,   -13,   -13,   -13,    -3,   -13,    -6,   -13,   -13,   -13,
+     -10,   -13,    -3,    -3,     6,   -13
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -13,   -13,     6,   -13,   -12
+     -13,   -13,     7,   -13,   -12
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]].  What to do in state STATE-NUM.  If
@@ -645,16 +660,16 @@ static const yytype_int8 yypgoto[] =
 #define YYTABLE_NINF -1
 static const yytype_uint8 yytable[] =
 {
-       5,     1,     6,     7,    21,    22,     8,    17,    18,    23,
-      24,     3,     4,    11,    12,    13,    14,    16,    15,     0,
-      22,     0,    20
+       5,     1,     6,     7,    22,    23,     8,    17,    18,    19,
+      24,    25,     3,     4,    11,    12,    13,    14,    16,    15,
+       0,    23,     0,    21
 };
 
 static const yytype_int8 yycheck[] =
 {
-       6,     3,     8,     9,    14,    15,    12,    10,    11,    21,
-      22,     4,     0,    12,    12,    12,    16,    13,     5,    -1,
-      15,    -1,    16
+       6,     3,     8,     9,    14,    15,    12,    10,    11,    12,
+      22,    23,     4,     0,    12,    12,    12,    16,    13,     5,
+      -1,    15,    -1,    16
 };
 
 /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
@@ -662,8 +677,8 @@ static const yytype_int8 yycheck[] =
 static const yytype_uint8 yystos[] =
 {
        0,     3,    18,     4,     0,     6,     8,     9,    12,    19,
-      20,    12,    12,    12,    16,     5,    13,    10,    11,    21,
-      19,    14,    15,    21,    21
+      20,    12,    12,    12,    16,     5,    13,    10,    11,    12,
+      21,    19,    14,    15,    21,    21
 };
 
 #define yyerrok		(yyerrstatus = 0)
@@ -1478,54 +1493,82 @@ yyreduce:
   switch (yyn)
     {
         case 5:
-#line 159 "calc.y"
-    { fprintf(stdout,"\n\n\n\nDebugging,TOK_INT_KEYWORD in parser,\n id:\t%s\n", (yyvsp[(2) - (2)].string));
+#line 174 "calc.y"
+    {
+                                           fprintf(stdout,"\n\n\n\nDebugging,TOK_INT_KEYWORD in parser,\n id:\t%s\n", (yyvsp[(2) - (2)].string));
                                           symbol_table_pointer_ref= insert(symbol_table_pointer_ref,(yyvsp[(2) - (2)].string),0,9999,9999.99);
                                           fprintf(stdout, "Read from symbol table: %s\n", symbol_table_pointer_ref->id_name);
-                                          fprintf(stdout, "Read from symbol table: %d\n", symbol_table_pointer_ref->ival); ;}
+                                          fprintf(stdout, "Read from symbol table: %d\n", symbol_table_pointer_ref->ival);
+                                        ;}
     break;
 
   case 6:
-#line 163 "calc.y"
-    { fprintf(stdout,"\n\n\n\nDebugging,TOK_FLOAT_KEYWORD in parser %s\n", (yyvsp[(2) - (2)].string));
-                                          symbol_table_pointer_ref= insert(symbol_table_pointer_ref,(yyvsp[(2) - (2)].string),1,9999,9999.99);  ;}
+#line 180 "calc.y"
+    {
+                                         fprintf(stdout,"\n\n\n\nDebugging,TOK_FLOAT_KEYWORD in parser %s\n", (yyvsp[(2) - (2)].string));
+                                          symbol_table_pointer_ref= insert(symbol_table_pointer_ref,(yyvsp[(2) - (2)].string),1,9999,9999.99);
+                                        ;}
     break;
 
   case 7:
-#line 165 "calc.y"
-    { fprintf(stdout,"\n\n\n\nDebugging,TOK_IDENTIFIER %s and %d \n", (yyvsp[(1) - (3)].string), (yyvsp[(3) - (3)].struct_expr).ival);
+#line 184 "calc.y"
+    {
+                                          fprintf(stdout,"\n\n\n\nDebugging,TOK_IDENTIFIER %s and %d \n", (yyvsp[(1) - (3)].string), (yyvsp[(3) - (3)].struct_expr).ival);
                                           update(symbol_table_pointer_ref,(yyvsp[(1) - (3)].string),(yyvsp[(3) - (3)].struct_expr).ival,(yyvsp[(3) - (3)].struct_expr).fval);
-                                          fprintf(stdout, "Read after update; value of %s = %d\n", symbol_table_pointer_ref->id_name, symbol_table_pointer_ref->ival);;}
+                                           fprintf(stdout, "Read after update; value of %s = %d\n", symbol_table_pointer_ref->id_name, symbol_table_pointer_ref->ival);
+                                        ;}
     break;
 
   case 8:
-#line 169 "calc.y"
-    { fprintf(stdout, "TOK_PRINTVAR the value is %s\n", (yyvsp[(2) - (2)].string)); print(symbol_table_pointer_ref,(yyvsp[(2) - (2)].string));;}
+#line 190 "calc.y"
+    {
+                                    fprintf(stdout, "TOK_PRINTVAR the value is %s\n", (yyvsp[(2) - (2)].string)); print(symbol_table_pointer_ref,(yyvsp[(2) - (2)].string));
+                                        ;}
     break;
 
   case 9:
-#line 173 "calc.y"
-    {/* $$ = $1 + $3; */ ;}
+#line 196 "calc.y"
+    {
+        fprintf(stdout," expr value in TOK_ADD before addition %s and %d = %d ---\n",(yyvsp[(1) - (3)].struct_expr).string,(yyvsp[(3) - (3)].struct_expr).ival);
+        (yyval.struct_expr).ival = (yyvsp[(1) - (3)].struct_expr).ival + (yyvsp[(3) - (3)].struct_expr).ival;
+    fprintf(stdout," expr value in TOK_ADD addition %d + %d = %d ---\n",(yyvsp[(1) - (3)].struct_expr).ival,(yyvsp[(3) - (3)].struct_expr).ival, (yyval.struct_expr).ival);
+    
+    ;}
     break;
 
   case 10:
-#line 174 "calc.y"
-    {/* $$ = $1 * $3; */;}
+#line 202 "calc.y"
+    {
+                             (yyval.struct_expr).fval = (yyvsp[(1) - (3)].struct_expr).fval * (yyvsp[(3) - (3)].struct_expr).fval;
+                        ;}
     break;
 
   case 11:
-#line 175 "calc.y"
-    { fprintf(stdout,"\n\n\n\e rule applied: E is num_int %d\n", (yyvsp[(1) - (1)].int_val)); (yyval.struct_expr).ival = (yyvsp[(1) - (1)].int_val);  ;}
+#line 205 "calc.y"
+    {
+                fprintf(stdout,"\n\n\n\e rule applied: E is num_int %d\n", (yyvsp[(1) - (1)].int_val));
+                (yyval.struct_expr).ival = (yyvsp[(1) - (1)].int_val);
+              ;}
     break;
 
   case 12:
-#line 176 "calc.y"
-    { fprintf(stdout,"\n\n\n\e rule applied: E is float_int %d\n", (yyvsp[(1) - (1)].float_val)); (yyval.struct_expr).fval = (yyvsp[(1) - (1)].float_val); ;}
+#line 209 "calc.y"
+    { fprintf(stdout,"\n\n\n\e rule applied: E is float_int %f\n", (yyvsp[(1) - (1)].float_val)); (yyval.struct_expr).fval = (yyvsp[(1) - (1)].float_val); ;}
+    break;
+
+  case 13:
+#line 211 "calc.y"
+    {
+                    (yyval.struct_expr).string = (yyvsp[(1) - (1)].string);
+                    fprintf(stdout,"---TOK_IDENTIFIER----\n");
+                    fprintf(stdout,"%%%%%% %s ^^^^^^ \n",(yyvsp[(1) - (1)].string));
+                    
+                ;}
     break;
 
 
 /* Line 1267 of yacc.c.  */
-#line 1529 "calc.tab.c"
+#line 1572 "calc.tab.c"
       default: break;
     }
   YY_SYMBOL_PRINT ("-> $$ =", yyr1[yyn], &yyval, &yyloc);
@@ -1739,12 +1782,12 @@ yyreturn:
 }
 
 
-#line 180 "calc.y"
+#line 220 "calc.y"
 
 
 int yyerror(char *s)
 {
-	printf("\nsyntax error on line no %d\n",yylineno);
+	printf("\n %s on line no %d\n",s, yylineno);
 	return 0;
 }
 

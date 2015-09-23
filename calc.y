@@ -1,7 +1,8 @@
 %{
 #include <stdio.h>
 #include <stdlib.h>
-extern int yylineno; 
+#include <string.h>
+extern int yylineno;
 
 typedef struct sym_node * SMT; 
 
@@ -119,6 +120,20 @@ void print(SMT smt_ref, char* id){
         }
 }
 
+int type_check(SMT smt_ref, char* id){
+    printf(" Type check \n");
+    printf("Input for type checking %s \n", id);
+    int type_check;
+    SMT type_check_node_pointer;
+    type_check_node_pointer = smt_ref;
+    /*if(type_check_node_pointer != NULL){*/
+       type_check_node_pointer = lookup(smt_ref, id);
+       type_check = type_check_node_pointer->type;
+   /* } */
+    printf("\nType_checking output ====  %d\n", type_check);
+    return type_check;
+}
+
 
 %}
 
@@ -128,7 +143,7 @@ void print(SMT smt_ref, char* id){
         int int_val;
         float float_val;
         char *string;
-        
+        int data_type;
          /* Structure to store identifiers, their respective values and datatypes */
          struct s_expr
          {               /*supposed that event a identifier will be a expr becuase, a variable might be referenced later on via the identifier */
@@ -156,24 +171,49 @@ stmts:
 	| stmt TOK_SEMICOLON stmts
 ;
 
-stmt: TOK_INT_KEYWORD TOK_IDENTIFIER    { fprintf(stdout,"\n\n\n\nDebugging,TOK_INT_KEYWORD in parser,\n id:\t%s\n", $2);
+stmt: TOK_INT_KEYWORD TOK_IDENTIFIER    {
+                                           fprintf(stdout,"\n\n\n\nDebugging,TOK_INT_KEYWORD in parser,\n id:\t%s\n", $2);
                                           symbol_table_pointer_ref= insert(symbol_table_pointer_ref,$2,0,9999,9999.99);
                                           fprintf(stdout, "Read from symbol table: %s\n", symbol_table_pointer_ref->id_name);
-                                          fprintf(stdout, "Read from symbol table: %d\n", symbol_table_pointer_ref->ival); }
-    | TOK_FLOAT_KEYWORD TOK_IDENTIFIER  { fprintf(stdout,"\n\n\n\nDebugging,TOK_FLOAT_KEYWORD in parser %s\n", $2);
-                                          symbol_table_pointer_ref= insert(symbol_table_pointer_ref,$2,1,9999,9999.99);  }
-    | TOK_IDENTIFIER TOK_EQUAL expr     { fprintf(stdout,"\n\n\n\nDebugging,TOK_IDENTIFIER %s and %d \n", $1, $3.ival);
+                                          fprintf(stdout, "Read from symbol table: %d\n", symbol_table_pointer_ref->ival);
+                                        }
+    | TOK_FLOAT_KEYWORD TOK_IDENTIFIER  {
+                                         fprintf(stdout,"\n\n\n\nDebugging,TOK_FLOAT_KEYWORD in parser %s\n", $2);
+                                          symbol_table_pointer_ref= insert(symbol_table_pointer_ref,$2,1,9999,9999.99);
+                                        }
+    | TOK_IDENTIFIER TOK_EQUAL expr     {
+                                          fprintf(stdout,"\n\n\n\nDebugging,TOK_IDENTIFIER %s and %d \n", $1, $3.ival);
                                           update(symbol_table_pointer_ref,$1,$3.ival,$3.fval);
-                                          fprintf(stdout, "Read after update; value of %s = %d\n", symbol_table_pointer_ref->id_name, symbol_table_pointer_ref->ival);}
+                                           fprintf(stdout, "Read after update; value of %s = %d\n", symbol_table_pointer_ref->id_name, symbol_table_pointer_ref->ival);
+                                        }
 
-    | TOK_PRINTVAR TOK_IDENTIFIER       { fprintf(stdout, "TOK_PRINTVAR the value is %s\n", $2); print(symbol_table_pointer_ref,$2);}
+    | TOK_PRINTVAR TOK_IDENTIFIER       {
+                                    fprintf(stdout, "TOK_PRINTVAR the value is %s\n", $2); print(symbol_table_pointer_ref,$2);
+                                        }
 ;
 
-expr:    
-    expr TOK_ADD expr {/* $$ = $1 + $3; */ }
-  | expr TOK_MUL expr {/* $$ = $1 * $3; */}
-  | TOK_NUM_INT { fprintf(stdout,"\n\n\n\e rule applied: E is num_int %d\n", $1); $$.ival = $1;  }
-  | TOK_NUM_FLOAT { fprintf(stdout,"\n\n\n\e rule applied: E is float_int %d\n", $1); $$.fval = $1; }
+expr:
+    expr TOK_ADD expr {
+        fprintf(stdout," expr value in TOK_ADD before addition %s and %d = %d ---\n",$1.string,$3.ival);
+        $$.ival = $1.ival + $3.ival;
+    fprintf(stdout," expr value in TOK_ADD addition %d + %d = %d ---\n",$1.ival,$3.ival, $$.ival);
+    
+    }
+    | expr TOK_MUL expr {
+                             $$.fval = $1.fval * $3.fval;
+                        }
+    | TOK_NUM_INT {
+                fprintf(stdout,"\n\n\n\e rule applied: E is num_int %d\n", $1);
+                $$.ival = $1;
+              }
+    | TOK_NUM_FLOAT { fprintf(stdout,"\n\n\n\e rule applied: E is float_int %f\n", $1); $$.fval = $1; }
+    | TOK_IDENTIFIER
+                {
+                    $$.string = $1;
+                    fprintf(stdout,"---TOK_IDENTIFIER----\n");
+                    fprintf(stdout,"%%%%%% %s ^^^^^^ \n",$1);
+                    
+                }
 ;
 
 
@@ -181,7 +221,7 @@ expr:
 
 int yyerror(char *s)
 {
-	printf("\nsyntax error on line no %d\n",yylineno);
+	printf("\n %s on line no %d\n",s, yylineno);
 	return 0;
 }
 

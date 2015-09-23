@@ -76,12 +76,12 @@
 
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 typedef union YYSTYPE
-#line 127 "calc.y"
+#line 142 "calc.y"
 {
         int int_val;
         float float_val;
         char *string;
-        
+        int data_type;
          /* Structure to store identifiers, their respective values and datatypes */
          struct s_expr
          {               /*supposed that event a identifier will be a expr becuase, a variable might be referenced later on via the identifier */
