@@ -224,8 +224,10 @@ expr:
                 $$.ival = $1.ival * $3.ival;
             }
             else if($1.type==1){
-                $$.fval = $1.fval + $3.fval;
+                $$.fval = $1.fval * $3.fval;
             }
+        }else{
+           yyerror("Mismatch in data type");
         }
     }
     | TOK_NUM_INT {
