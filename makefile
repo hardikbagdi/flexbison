@@ -1,4 +1,4 @@
-all: compile_flex compile_bison link_flex_bison output
+all: compile_flex compile_bison link_flex_bison
 
 compile_flex:
 	flex -l calc.l
@@ -8,9 +8,6 @@ compile_bison:
 
 link_flex_bison:
 	gcc -o calc calc.tab.c lex.yy.c -ll
-
-output:
-	./calc < input
 
 clean:
 	rm calc calc.output lex.yy.c calc.tab.h calc.tab.c
