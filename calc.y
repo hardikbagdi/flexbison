@@ -23,7 +23,7 @@
         float fval;
         /* data */
     }sm_node;
-    // symbol table as a linkedlist of sym_node
+    /* symbol table as a linkedlist of sym_node */
     
     /*
      List of functions working in symbol table:
@@ -40,30 +40,29 @@
      ELSE return null.
      */
     SMT lookup(SMT smt_ref, char* id){
-        // printf(" Fetching values from symbol table \n");
+        /* printf(" Fetching values from symbol table \n"); */
         if(smt_ref != NULL){
-            // printf("pointer value is not null \n");
+            /* printf("pointer value is not null \n"); */
             SMT lookup_node_pointer = smt_ref;
             while(lookup_node_pointer != NULL){
                 if(strcmp(lookup_node_pointer->id_name,id)==0){
-                    //  printf("Identifier found %s ", lookup_node_pointer->id_name);
+                    /*  printf("Identifier found %s ", lookup_node_pointer->id_name); */
                     return lookup_node_pointer;
                 }else{
                     lookup_node_pointer = lookup_node_pointer->next;
                 }
             }
         }else{
-            // printf("Identifier missing in symbol table \n");
+            /* printf("Identifier missing in symbol table \n"); */
             return NULL;
         }
     }
     
-    /*
-     Function to insert values in the symbol table */
+    /* Function to insert values in the symbol table */
     SMT insert(SMT smt_ref,char* id,int type_of_expr,int int_val,float float_val){
-        //  printf(" Entered insert function \n");
+        /*  printf(" Entered insert function \n"); */
         if(lookup(smt_ref,id) == NULL){
-            //   printf("Going to insert values \n");
+            /*  printf("Going to insert values \n"); */
             SMT new_node_pointer = (SMT)malloc(sizeof(sm_node));
             new_node_pointer->id_name = (char *) strdup(id);
             new_node_pointer->type=type_of_expr;
@@ -72,8 +71,8 @@
             new_node_pointer->next = smt_ref;
             return new_node_pointer;
         }else{
-            //  printf("error in insertion \n");
-            yyerror();
+            /*  printf("error in insertion \n"); */
+            yyerror("Type error");
         }
     }
     
@@ -81,21 +80,21 @@
     void update(SMT smt_ref, char* id,int int_val,float float_val){
         /*  printf(" Entered update function \n"); */
         if(lookup(smt_ref,id) == NULL){
-            //  printf("Error in update \n");
+             /* printf("Error in update \n");*/
             yyerror();
         }else{
-            //    printf("Going to update identifier value");
+               /* printf("Going to update identifier value"); */
             SMT update_node_pointer = smt_ref;
             while(update_node_pointer != NULL){
-                //   printf("point name : %s and Identifier value : %s and type value : %d and ival : %d\n",update_node_pointer->id_name,id, update_node_pointer->type, update_node_pointer->ival = int_val);
+                  /* printf("point name : %s and Identifier value : %s and type value : %d and ival : %d\n",update_node_pointer->id_name,id, update_node_pointer->type, update_node_pointer->ival = int_val); */
                 if(strcmp(update_node_pointer->id_name, id) == 0){
-                    //   printf("inside if loop of update function \n");
+                    /*   printf("inside if loop of update function \n"); */
                     if(update_node_pointer->type == 0){
                         update_node_pointer->ival = int_val;
-                        //  printf("value of int_val updated : %d \n", update_node_pointer->ival);
+                        /*  printf("value of int_val updated : %d \n", update_node_pointer->ival);*/
                     }else if(update_node_pointer->type == 1){
                         update_node_pointer->fval = float_val;
-                        //  printf("value of float_val updated : %.2f \n", update_node_pointer->fval);
+                        /*  printf("value of float_val updated : %.2f \n", update_node_pointer->fval);*/
                     }
                     break;
                 }else{
@@ -107,11 +106,11 @@
     
     /* Function to print values of existing pointer */
     void print(SMT smt_ref, char* id){
-        //  printf(" Entered print function \n");
+        /*  printf(" Entered print function \n");*/
         SMT print_node_pointer = smt_ref;
-        //printf("going to enter execute while loop \n");
+        /* printf("going to enter execute while loop \n"); */
         while(print_node_pointer != NULL){
-            //  printf("executing while loop \n");
+            /* printf("executing while loop \n"); */
             if(strcmp(print_node_pointer->id_name, id) == 0){
                 printf(" The Value of %s is", print_node_pointer->id_name);
                 if(print_node_pointer->type == 0){
@@ -164,17 +163,17 @@ stmts:
 ;
 
 stmt: TOK_INT_KEYWORD TOK_IDENTIFIER    {
-    // fprintf(stdout,"\n\nDebugging,TOK_INT_KEYWORD in parser,\n id:\t%s\n", $2);
+    /* fprintf(stdout,"\n\nDebugging,TOK_INT_KEYWORD in parser,\n id:\t%s\n", $2);*/
     symbol_table_pointer_ref= insert(symbol_table_pointer_ref,$2,0,0,0.00);
     /*fprintf(stdout, "Read from symbol table: %s and value is %d", symbol_table_pointer_ref->id_name,symbol_table_pointer_ref->ival);*/
 }
 | TOK_FLOAT_KEYWORD TOK_IDENTIFIER  {
-    // fprintf(stdout,"\n\n\n\nDebugging,TOK_FLOAT_KEYWORD in parser %s\n", $2);
+    /* fprintf(stdout,"\n\n\n\nDebugging,TOK_FLOAT_KEYWORD in parser %s\n", $2); */
     symbol_table_pointer_ref= insert(symbol_table_pointer_ref,$2,1,0,0.00);
     /* fprintf(stdout, "Read from symbol table: %s and value is %.2f", symbol_table_pointer_ref->id_name,symbol_table_pointer_ref->fval);*/
 }
 | TOK_IDENTIFIER TOK_EQUAL expr     {
-    //fprintf(stdout,"\n\nDebugging,TOK_IDENTIFIER %s and value is %d \n", $1, $3.ival);
+    /*fprintf(stdout,"\n\nDebugging,TOK_IDENTIFIER %s and value is %d \n", $1, $3.ival); */
     SMT id_in_smt = lookup(symbol_table_pointer_ref,$1);
     if(id_in_smt==NULL){
         yyerror(strcat($1," is used but not declared"));
@@ -193,13 +192,12 @@ stmt: TOK_INT_KEYWORD TOK_IDENTIFIER    {
 }
 
 | TOK_PRINTVAR TOK_IDENTIFIER       {
-    //fprintf(stdout, "TOK_PRINTVAR the value is %s\n", $2);
+    /*fprintf(stdout, "TOK_PRINTVAR the value is %s\n", $2); */
     SMT id_in_smt=  lookup(symbol_table_pointer_ref,$2);
     if(id_in_smt==NULL){
         yyerror(strcat($2," is used but not declared"));
     }
     print(symbol_table_pointer_ref,$2);
-    //add print support. currently prints only the head node of the SMT.
 }
 ;
 
@@ -218,7 +216,7 @@ expr TOK_ADD expr {
     else{
         yyerror("Type error");
     }
-    //fprintf(stdout," expr value in TOK_ADD addition %d + %d = %d ---\n",$1.ival,$3.ival, $$.ival);
+    /*fprintf(stdout," expr value in TOK_ADD addition %d + %d = %d ---\n",$1.ival,$3.ival, $$.ival);*/
     
 }
 | expr TOK_MUL expr {
@@ -254,13 +252,13 @@ expr TOK_ADD expr {
         if((id_in_smt->type)==0)
         {
             $$.ival = id_in_smt->ival;
-            // $$.id_name=id_in_smt->id_name;
+            /* $$.id_name=id_in_smt->id_name; */
             /* printf("copied id ival to expr\n");*/
         }
         if((id_in_smt->type)==1)
         {
             $$.fval = id_in_smt->fval;
-            // $$.id_name=id_in_smt->id_name;
+            /* $$.id_name=id_in_smt->id_name; */
             /*  printf("copied id fval to expr\n");*/
         }
     }
