@@ -4,9 +4,9 @@
  Assignment
  */
 %{
-#include <stdio.h>
-#include <stdlib.h>
-#include "calc.tab.h"
+    #include <stdio.h>
+    #include <stdlib.h>
+    #include "calc.tab.h"
 %}
 
 digit           ([0-9])
@@ -32,13 +32,16 @@ identifier      ([a-z])([a-z0-9])*
 "+"                    {/* printf(" TOK_ADD \n"); */return(TOK_ADD);}
 "*"                    {/* printf(" TOK_MUL \n"); */return(TOK_MUL);}
 "="                    {/* printf(" TOK_EQUAL \n"); */return(TOK_EQUAL);}
-[ \n]                  {}
-.                      {printf("Invalid character '%c', ignored\n", yytext[0]);}
+[\t]                  {}
+[\n]                  {}
+" "                   {}
+.                     {yyerror("Parsing error");/*printf("Invalid character '%c', ignored\n", yytext[0]);*/}
 
 %%
+
 /*
-int main()
-{
-yylex();
-return 0;
-}*/
+ int main()
+ {
+ yylex();
+ return 0;
+ }*/
